@@ -1,11 +1,27 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import {createLogger} from 'redux-logger';
+import reducer from './redux/reducers';
+import {Provider} from 'react-redux';
+
+const loggerMiddleware = createLogger({predicate: (getState, action) => __DEV__});
+const configureStore = (initialState) => {
+  const enhancer = compose(applyMiddleware(thunkMiddleware, loggerMiddleware));
+
+  return createStore(reducer, initialState, enhancer);
+};
+
+const store = configureStore({});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <Text>Reddit Client</Text>
+        </View>
+      </Provider>
   );
 }
 
