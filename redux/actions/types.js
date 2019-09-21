@@ -1,0 +1,2 @@
+export const SET_LOADING_ENTRIES = 'SET_LOADING_ENTRIES';
+export const SET_ENTRIES = 'SET_ENTRIES';
