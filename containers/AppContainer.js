@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../redux/actions';
 import {bindActionCreators} from 'redux';
+import Feed from '../components/Feed';
 
 class AppContainer extends Component {
     constructor(props) {
@@ -11,26 +12,20 @@ class AppContainer extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Reddit Client</Text>
-                <TouchableHighlight onPress={() => this.toggleLoadingState(true)}>
-                    <Text>Enable Loading State</Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => this.toggleLoadingState(false)}>
-                    <Text>Disable Loading State</Text>
-                </TouchableHighlight>
-                <Text>Loaded Entries: {(this.props.entries) ? 'loaded' : 'not loaded yet'}</Text>
-                {this.renderSpinner()}
+            <View style={(this.props.loading) ? [styles.container, styles.containerLoading] : styles.container}>
+                {this.renderContent()}
             </View>
         );
     }
 
-    renderSpinner() {
-        return (this.props.loading) ? <ActivityIndicator size='small' color='#00f' /> : null;
+    renderContent() {
+        return (this.props.loading) ?
+            <ActivityIndicator size='large' color='#00f' /> :
+            <Feed entries={this.getEntries()} />;
     }
 
-    toggleLoadingState(loadingState) {
-        this.props.setLoadingEntries(loadingState);
+    getEntries() {
+        return this.props.entries.slice(0,5);
     }
 }
 
@@ -46,10 +41,12 @@ const mapStateToProps = (state) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        marginTop: 25
     },
+    containerLoading: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

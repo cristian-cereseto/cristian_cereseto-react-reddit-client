@@ -6,7 +6,11 @@ export const setLoadingEntries = (loadingEntries) => ({ type: types.SET_LOADING_
 export const getEntries = () => {
     return (dispatch, getState) => {
         dispatch(setLoadingEntries(true));
-        RedditAPI.getFeed('/top').then(entries => {
+        RedditAPI.getFeed('/top').then(response => {
+            const entries = [];
+            if (response.data) {
+                response.data.children.map(entry => entries.push(entry.data));
+            }
             dispatch(getEntriesSuccess());
             dispatch(setEntries(entries));
         }).catch(error => {

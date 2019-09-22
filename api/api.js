@@ -1,5 +1,3 @@
-import * as mockData from './top';
-
 const baseUrl = 'https://www.reddit.com/';
 const jsonPostfix = '.json';
 
