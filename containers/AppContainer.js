@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 class AppContainer extends Component {
     constructor(props) {
         super(props);
-        this.props.setLoadingEntries(true);
+        this.props.getEntries();
     }
     render() {
         return (
@@ -19,7 +19,7 @@ class AppContainer extends Component {
                 <TouchableHighlight onPress={() => this.toggleLoadingState(false)}>
                     <Text>Disable Loading State</Text>
                 </TouchableHighlight>
-                <Text>Loading: {this.props.loading}</Text>
+                <Text>Loaded Entries: {(this.props.entries) ? 'loaded' : 'not loaded yet'}</Text>
                 {this.renderSpinner()}
             </View>
         );
@@ -38,7 +38,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, disp
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loadingEntries
+        loading: state.loadingEntries,
+        entries: state.entries
     }
 };
 
