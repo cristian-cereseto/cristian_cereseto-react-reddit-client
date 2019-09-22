@@ -1,19 +1,29 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import Entry from './Entry';
 
 class Feed extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.handleEndReached = this.handleEndReached.bind(this);
     }
     render() {
         return (
-            <View styles={styles.container}>
-                <ScrollView>
-                    {this.props.entries.map((entry, index) => (<Entry {...entry} key={index} />))}
-                </ScrollView>
-            </View>
+            <SafeAreaView styles={styles.container}>
+                <FlatList
+                    data={this.props.entries}
+                    renderItem={({item}) => <Entry {...item}/>}
+                    keyExtractor={(item) => item.id}
+                    onEndReached={this.handleEndReached}
+                />
+            </SafeAreaView>
         )
+    }
+
+    handleEndReached() {
+        if (this.props.handleEndReached) {
+            this.props.handleEndReached();
+        }
     }
 }
 

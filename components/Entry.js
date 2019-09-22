@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
 import moment from 'moment';
 
