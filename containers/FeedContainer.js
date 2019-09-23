@@ -10,6 +10,7 @@ class FeedContainer extends Component {
         super(props);
         this.props.getEntries();
         this.onFeedItemPressed = this.onFeedItemPressed.bind(this);
+        this.fetchNextEntries = this.fetchNextEntries.bind(this);
     }
 
     render() {
@@ -23,11 +24,19 @@ class FeedContainer extends Component {
     renderContent() {
         return (this.props.loading) ?
             <ActivityIndicator size='large' color='#00f' /> :
-            <Feed entries={this.props.entries} onItemPress={this.onFeedItemPressed} />;
+            <Feed entries={this.props.entries} onItemPress={this.onFeedItemPressed} handleEndReached={this.fetchNextEntries}/>;
     }
 
     onFeedItemPressed(entry) {
         this.props.navigation.navigate('EntryDetails', { entry });
+    }
+
+    fetchNextEntries() {
+        const entries = this.props.entries;
+        if (entries.length === 25) {
+            const lastPostId = `t3_${entries[entries.length - 1].id}`;
+            this.props.getNextEntries(lastPostId);
+        }
     }
 }
 

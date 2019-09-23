@@ -17,6 +17,12 @@ export const reducer = (state, action) => {
                 ...state,
                 entries: action.entries
             };
+        case types.SET_NEXT_ENTRIES:
+            const entries = state.entries.concat(action.newEntries)
+            return {
+                ...state,
+                entries
+            };
         case types.GET_ENTRIES_SUCCESS:
             return {
                 ...state,

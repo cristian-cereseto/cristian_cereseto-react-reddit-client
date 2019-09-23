@@ -13,7 +13,7 @@ class Feed extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 0,
+            maxReached: false,
             entries: props.entries
         };
         this.handleEndReached = this.handleEndReached.bind(this);
@@ -25,7 +25,7 @@ class Feed extends Component {
         return (
             <SafeAreaView styles={styles.container}>
                 <FlatList
-                    data={this.getEntries()}
+                    data={this.state.entries}
                     renderItem={({item, index}) => {
                         return (
                             <TouchableHighlight>
@@ -33,7 +33,6 @@ class Feed extends Component {
                             </TouchableHighlight>
                         );
                     }}
-                    keyExtractor={(item) => item.id}
                     onEndReached={this.handleEndReached}
                 />
             </SafeAreaView>
@@ -41,8 +40,9 @@ class Feed extends Component {
     }
 
     handleEndReached() {
-        if (this.state.currentPage < 5) {
-            this.setState(state => ({currentPage: state.currentPage + 1}));
+        if (this.state.entries.length === 25) {
+            this.setState(state => ({maxReached: true}));
+            this.props.handleEndReached();
         }
     }
 
@@ -71,10 +71,6 @@ class Feed extends Component {
         if (this.props.onItemPress) {
             this.props.onItemPress(entry);
         }
-    }
-
-    getEntries() {
-        return this.state.entries.slice(0, 5 + this.state.currentPage * 5);
     }
 
     getEntryProps(entry, index) {
