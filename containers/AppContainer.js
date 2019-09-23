@@ -8,12 +8,9 @@ import Feed from '../components/Feed';
 class AppContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            currentPage: 0
-        };
-        this.getNextEntries = this.getNextEntries.bind(this);
         this.props.getEntries();
     }
+
     render() {
         return (
             <View style={(this.props.loading) ? [styles.container, styles.containerLoading] : styles.container}>
@@ -25,17 +22,7 @@ class AppContainer extends Component {
     renderContent() {
         return (this.props.loading) ?
             <ActivityIndicator size='large' color='#00f' /> :
-            <Feed entries={this.getEntries()} handleEndReached={this.getNextEntries} />;
-    }
-
-    getNextEntries() {
-        if (this.state.currentPage < 5) {
-            this.setState(state => ({currentPage: state.currentPage + 1}));
-        }
-    }
-
-    getEntries() {
-        return this.props.entries.slice(0, 5 + this.state.currentPage * 5);
+            <Feed entries={this.props.entries} />;
     }
 }
 

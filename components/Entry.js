@@ -4,6 +4,10 @@ import { Button, Card, Paragraph, Title } from 'react-native-paper';
 import moment from 'moment';
 
 export default class Entry extends Component {
+    constructor(props) {
+        super(props);
+        this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+    }
     render() {
         return(
             <Card>
@@ -13,7 +17,7 @@ export default class Entry extends Component {
                 </Card.Content>
                 {this.renderImage()}
                 <Card.Actions styles={styles.actionsContainer}>
-                    <Button icon="delete">Dismiss Post</Button>
+                    <Button icon="delete" onPress={this.handleDeleteButtonClick}>Dismiss Post</Button>
                     <Text>{this.props.num_comments} comments</Text>
                 </Card.Actions>
             </Card>
@@ -22,6 +26,12 @@ export default class Entry extends Component {
 
     renderImage() {
         return (this.props.thumbnail) ? <Card.Cover source={{uri: this.props.thumbnail}} /> : null;
+    }
+
+    handleDeleteButtonClick() {
+        if (this.props.onDelete) {
+            this.props.onDelete();
+        }
     }
 }
 
