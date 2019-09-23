@@ -58,6 +58,16 @@ class Feed extends Component {
     }
 
     goToEntryDetails(entry) {
+        const entries = this.state.entries;
+        const entryToOpen = entries.find(item => item === entry);
+        entryToOpen.isRead = true;
+        this.setState(state => {
+            return {
+                ...state,
+                entries
+            }
+        });
+
         if (this.props.onItemPress) {
             this.props.onItemPress(entry);
         }

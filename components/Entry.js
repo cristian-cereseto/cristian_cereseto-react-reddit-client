@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { Button, Card, Paragraph, Title } from 'react-native-paper';
+import { Avatar, Button, Card, Paragraph } from 'react-native-paper';
 import moment from 'moment';
 
 export default class Entry extends Component {
@@ -13,8 +13,8 @@ export default class Entry extends Component {
     render() {
         return(
             <Card onPress={this.handlePress}>
+                <Card.Title title={this.props.title} right={(props) => this.renderIsReadStatus(props, this.props.isRead)} />
                 <Card.Content styles={styles.container}>
-                    <Title>{this.props.title}</Title>
                     <Paragraph>{this.props.author} - {moment(this.props.created_utc).fromNow()}</Paragraph>
                 </Card.Content>
                 {this.renderImage()}
@@ -24,6 +24,10 @@ export default class Entry extends Component {
                 </Card.Actions>
             </Card>
         )
+    }
+
+    renderIsReadStatus(props, isRead) {
+        return (!isRead) ? <Avatar.Icon size={24} icon="announcement" /> : null;
     }
 
     renderImage() {

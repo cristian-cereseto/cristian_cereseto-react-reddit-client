@@ -20,7 +20,7 @@ export default class EntryDetails extends Component {
                 />
                 <Card>
                     <Card.Content styles={styles.container}>
-                        <Title>{entry.title} DETAILS</Title>
+                        <Title>{entry.title} DETAILS {entry.isRead}</Title>
                         <Paragraph>{entry.author} - {moment(entry.created_utc).fromNow()}</Paragraph>
                     </Card.Content>
                     {this.renderImage(entry.thumbnail)}

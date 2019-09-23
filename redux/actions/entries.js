@@ -9,7 +9,10 @@ export const getEntries = () => {
         RedditAPI.getFeed('/top').then(response => {
             const entries = [];
             if (response.data) {
-                response.data.children.map(entry => entries.push(entry.data));
+                response.data.children.map(entry => {
+                    entry.data.isRead = false;
+                    entries.push(entry.data)
+                });
             }
             dispatch(getEntriesSuccess());
             dispatch(setEntries(entries));
