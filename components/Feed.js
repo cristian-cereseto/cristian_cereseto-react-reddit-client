@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, TouchableHighlight } from 'react-native';
 import Entry from './Entry';
 
 class Feed extends Component {
@@ -17,6 +17,7 @@ class Feed extends Component {
             entries: props.entries
         };
         this.handleEndReached = this.handleEndReached.bind(this);
+        this.goToEntryDetails = this.goToEntryDetails.bind(this);
         this.dismissEntry = this.dismissEntry.bind(this);
     }
 
@@ -25,7 +26,13 @@ class Feed extends Component {
             <SafeAreaView styles={styles.container}>
                 <FlatList
                     data={this.getEntries()}
-                    renderItem={({item, index}) => <Entry {...item} onDelete={this.dismissEntry.bind(this, index)}/>}
+                    renderItem={({item, index}) => {
+                        return (
+                            <TouchableHighlight onPress={this.goToEntryDetails}>
+                                <Entry {...item} onDelete={this.dismissEntry.bind(this, index)}/>
+                            </TouchableHighlight>
+                        );
+                    }}
                     keyExtractor={(item) => item.id}
                     onEndReached={this.handleEndReached}
                 />
@@ -48,6 +55,12 @@ class Feed extends Component {
                 entries: newEntries
             });
         });
+    }
+
+    goToEntryDetails() {
+        if (this.props.onItemPress) {
+            this.props.onItemPress();
+        }
     }
 
     getEntries() {

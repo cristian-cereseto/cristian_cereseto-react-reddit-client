@@ -5,10 +5,11 @@ import { ActionCreators } from '../redux/actions';
 import {bindActionCreators} from 'redux';
 import Feed from '../components/Feed';
 
-class AppContainer extends Component {
+class FeedContainer extends Component {
     constructor(props) {
         super(props);
         this.props.getEntries();
+        this.onFeedItemPressed = this.onFeedItemPressed.bind(this);
     }
 
     render() {
@@ -22,7 +23,11 @@ class AppContainer extends Component {
     renderContent() {
         return (this.props.loading) ?
             <ActivityIndicator size='large' color='#00f' /> :
-            <Feed entries={this.props.entries} />;
+            <Feed entries={this.props.entries} onItemPress={this.onFeedItemPressed} />;
+    }
+
+    onFeedItemPressed() {
+        this.props.navigation.navigate('EntryDetails')
     }
 }
 
@@ -46,4 +51,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedContainer);
