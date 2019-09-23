@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
+import {Button} from 'react-native-paper';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../redux/actions';
 import {bindActionCreators} from 'redux';
@@ -11,11 +12,13 @@ class FeedContainer extends Component {
         this.props.getEntries();
         this.onFeedItemPressed = this.onFeedItemPressed.bind(this);
         this.fetchNextEntries = this.fetchNextEntries.bind(this);
+        this.dismissAll = this.dismissAll.bind(this);
     }
 
     render() {
         return (
             <View style={(this.props.loading) ? [styles.container, styles.containerLoading] : styles.container}>
+                <Button icon={'delete'} styles={styles.deleteButton} onPress={this.dismissAll}>DISMISS ALL</Button>
                 {this.renderContent()}
             </View>
         );
@@ -38,6 +41,10 @@ class FeedContainer extends Component {
             this.props.getNextEntries(lastPostId);
         }
     }
+
+    dismissAll() {
+        this.props.dismissAllEntries();
+    }
 }
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, dispatch);
@@ -51,12 +58,17 @@ const mapStateToProps = (state) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: 25
+        marginTop: 25,
+        position: 'relative'
     },
     containerLoading: {
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    deleteButton: {
+        position: 'absolute',
+        top: 15,
+        right: 15
     }
 });
 

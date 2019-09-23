@@ -50,3 +50,5 @@ export const getEntriesSuccess = () => ({ type: types.GET_ENTRIES_SUCCESS });
 export const setEntries = (entries) => ({ type: types.SET_ENTRIES, entries });
 
 export const setNewEntries = (newEntries) => ({ type: types.SET_NEXT_ENTRIES, newEntries });
+
+export const dismissAllEntries = () => ({ type: types.REMOVE_ALL_ENTRIES });

@@ -33,6 +33,8 @@ export const reducer = (state, action) => {
                 ...state,
                 loadingEntries: false
             };
+        case types.REMOVE_ALL_ENTRIES:
+            return initialState;
         default:
             return initialState;
     }

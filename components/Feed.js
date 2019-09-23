@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, TouchableHighlight } from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, TouchableHighlight} from 'react-native';
 import Entry from './Entry';
+import Text from "react-native-web/dist/exports/Text";
 
 class Feed extends Component {
     static getDerivedStateFromProps(props, state) {
