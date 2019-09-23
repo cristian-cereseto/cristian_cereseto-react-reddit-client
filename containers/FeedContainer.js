@@ -26,8 +26,8 @@ class FeedContainer extends Component {
             <Feed entries={this.props.entries} onItemPress={this.onFeedItemPressed} />;
     }
 
-    onFeedItemPressed() {
-        this.props.navigation.navigate('EntryDetails')
+    onFeedItemPressed(entry) {
+        this.props.navigation.navigate('EntryDetails', { entry });
     }
 }
 

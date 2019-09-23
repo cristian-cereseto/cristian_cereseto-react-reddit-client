@@ -1,38 +1,39 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
 import moment from 'moment';
 
 export default class EntryDetails extends Component {
     constructor(props) {
         super(props);
-        this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
     }
+
     render() {
+        const { navigation } = this.props;
+        const entry = navigation.getParam('entry');
+
         return(
-            <Card>
-                <Text>ENTRY DETAILS</Text>
-                {/*<Card.Content styles={styles.container}>*/}
-                {/*    <Title>{this.props.title} DETAILS</Title>*/}
-                {/*    <Paragraph>{this.props.author} - {moment(this.props.created_utc).fromNow()}</Paragraph>*/}
-                {/*</Card.Content>*/}
-                {/*{this.renderImage()}*/}
-                {/*<Card.Actions styles={styles.actionsContainer}>*/}
-                {/*    <Button icon="delete" onPress={this.handleDeleteButtonClick}>Dismiss Post</Button>*/}
-                {/*    <Text>{this.props.num_comments} comments</Text>*/}
-                {/*</Card.Actions>*/}
-            </Card>
+            <View>
+                <Button
+                    title='Go back'
+                    onPress={() => this.props.navigation.goBack()}
+                />
+                <Card>
+                    <Card.Content styles={styles.container}>
+                        <Title>{entry.title} DETAILS</Title>
+                        <Paragraph>{entry.author} - {moment(entry.created_utc).fromNow()}</Paragraph>
+                    </Card.Content>
+                    {this.renderImage(entry.thumbnail)}
+                    <Card.Actions styles={styles.actionsContainer}>
+                        <Text>{entry.num_comments} comments</Text>
+                    </Card.Actions>
+                </Card>
+            </View>
         )
     }
 
-    renderImage() {
-        return (this.props.thumbnail) ? <Card.Cover source={{uri: this.props.thumbnail}} /> : null;
-    }
-
-    handleDeleteButtonClick() {
-        if (this.props.onDelete) {
-            this.props.onDelete();
-        }
+    renderImage(thumbnail) {
+        return (thumbnail) ? <Card.Cover source={{uri: thumbnail}} /> : null;
     }
 }
 

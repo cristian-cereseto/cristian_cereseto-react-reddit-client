@@ -7,6 +7,7 @@ export default class Entry extends Component {
     constructor(props) {
         super(props);
         this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+        this.handlePress = this.handlePress.bind(this);
     }
 
     render() {
@@ -27,6 +28,12 @@ export default class Entry extends Component {
 
     renderImage() {
         return (this.props.thumbnail) ? <Card.Cover source={{uri: this.props.thumbnail}} /> : null;
+    }
+
+    handlePress() {
+        if (this.props.handleEntryPress) {
+            this.props.handleEntryPress(this.props)
+        }
     }
 
     handleDeleteButtonClick() {

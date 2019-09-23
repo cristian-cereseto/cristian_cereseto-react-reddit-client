@@ -28,8 +28,8 @@ class Feed extends Component {
                     data={this.getEntries()}
                     renderItem={({item, index}) => {
                         return (
-                            <TouchableHighlight onPress={this.goToEntryDetails}>
-                                <Entry {...item} onDelete={this.dismissEntry.bind(this, index)}/>
+                            <TouchableHighlight>
+                                <Entry {...this.getEntryProps(item, index)}/>
                             </TouchableHighlight>
                         );
                     }}
@@ -57,14 +57,22 @@ class Feed extends Component {
         });
     }
 
-    goToEntryDetails() {
+    goToEntryDetails(entry) {
         if (this.props.onItemPress) {
-            this.props.onItemPress();
+            this.props.onItemPress(entry);
         }
     }
 
     getEntries() {
         return this.state.entries.slice(0, 5 + this.state.currentPage * 5);
+    }
+
+    getEntryProps(entry, index) {
+        return {
+            ...entry,
+            onDelete: this.dismissEntry.bind(this, index),
+            handleEntryPress: this.goToEntryDetails.bind(this, entry)
+        }
     }
 }
 
