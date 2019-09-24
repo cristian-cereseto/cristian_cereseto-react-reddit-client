@@ -16,4 +16,10 @@ Project created with React Native Expo framework to read reddit top 50 entries, 
 * Navigate to entry details.
 * See thumbnail image in modal view when on entry details.
 
+# Steps to run
+* Clone project
+* Run `yarn install` or `npm install`
+* Expo cli should be installed if not run `npm install expo-cli --global`.
+* Go to root folder and run `expo start`
+
 
