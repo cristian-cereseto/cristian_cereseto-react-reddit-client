@@ -23,7 +23,6 @@ class FeedContainer extends Component {
     render() {
         return (
             <View style={(this.props.loading) ? [styles.container, styles.containerLoading] : styles.container}>
-                {this.renderContent()}
                 <View styles={styles.deleteButtonWrapper}>
                     {(!this.props.loading) ?
                         <Button icon={'delete'} color="#655560" onPress={this.dismissAll}>
@@ -31,6 +30,7 @@ class FeedContainer extends Component {
                         </Button> :
                     null}
                 </View>
+                {this.renderContent()}
             </View>
         );
     }
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     deleteButtonWrapper: {
-        flex: 0,
+        flex: 0.1,
     }
 });
 

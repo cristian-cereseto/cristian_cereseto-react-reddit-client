@@ -75,6 +75,7 @@ class Feed extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#A4969B',
         flex: 1,
         justifyContent: 'space-between',
     }
