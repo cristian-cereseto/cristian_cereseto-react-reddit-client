@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import { Button, Card, Paragraph, Title } from 'react-native-paper';
+import { Button, Paragraph, Title } from 'react-native-paper';
+import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
+import {bindActionCreators} from 'redux';
+import {ActionCreators} from '../redux/actions';
+import { connect } from 'react-redux';
 
-export default class EntryDetails extends Component {
+class EntryDetails extends Component {
+    static navigationOptions = {
+        headerStyle: {
+            display: 'none',
+        }
+    }
+
     constructor(props) {
         super(props);
         this.state = { modalVisible: false };
         this.toggleModalVisibility = this.toggleModalVisibility.bind(this);
+        this.handleNavigationBack = this.handleNavigationBack.bind(this);
     }
 
     render() {
@@ -15,32 +26,29 @@ export default class EntryDetails extends Component {
         const entry = navigation.getParam('entry');
 
         return(
-            <View>
-                <Button
-                    title='Go back'
-                    onPress={() => this.props.navigation.goBack()}
-                />
-                <View styles={styles.container}>
-                    <Title>{entry.title} DETAILS {entry.isRead}</Title>
+            <View styles={styles.container}>
+                <View style={styles.content}>
+                    <NavigationEvents onWillBlur={this.handleNavigationBack} />
+                    <Title style={styles.text}>{entry.title} DETAILS {entry.isRead}</Title>
                     <Paragraph>{entry.author} - {moment(entry.created_utc).fromNow()}</Paragraph>
                     <Modal
-                        animationType="slide"
+                        animationType="fade"
                         transparent={false}
                         visible={this.state.modalVisible}>
-                        <View style={{marginTop: 22}}>
-                            <View style={styles.modalContent}>
-                                <Image source={{uri:  entry.thumbnail}} style={{width: 400, height: 400}} />
-                                <TouchableHighlight
-                                    onPress={this.toggleModalVisibility.bind(false)}>
-                                    <Text>Hide Modal</Text>
-                                </TouchableHighlight>
-                            </View>
+                        <View style={styles.modalContent}>
+                            <Image source={{uri:  entry.thumbnail}} style={{width: 250, height: 250}} />
+                            <TouchableHighlight
+                                onPress={this.toggleModalVisibility.bind(false)}>
+                                <Button icon="close" color="#FCF7FF" onPress={this.toggleModalVisibility.bind(this, false)}>
+                                    Hide Modal
+                                </Button>
+                            </TouchableHighlight>
                         </View>
                     </Modal>
-                </View>
-                {this.renderImage(entry.thumbnail)}
-                <View styles={styles.actionsContainer}>
-                    <Text>{entry.num_comments} comments</Text>
+                    {this.renderImage(entry.thumbnail)}
+                    <View styles={styles.actionsContainer}>
+                        <Text>{entry.num_comments} comments</Text>
+                    </View>
                 </View>
             </View>
         )
@@ -50,31 +58,56 @@ export default class EntryDetails extends Component {
         return (thumbnail) ?
             (
                 <TouchableHighlight onPress={this.toggleModalVisibility.bind(this, true)}>
-                    <Image source={{uri: thumbnail}} style={{width: 200, height: 200}} />
+                    <Image source={{uri: thumbnail}} style={{height: 150}} />
                 </TouchableHighlight>
             ) :
             null;
     }
+    
+    handleNavigationBack() {
+        const { navigation } = this.props;
+        const entry = navigation.getParam('entry');
+        this.props.markEntryAsRead(entry.id);
+        this.props.navigation.navigate('Feed');
+    }
 
     toggleModalVisibility(visible) {
         this.setState({modalVisible: visible});
-        console.log('toggleModalVisibility?', this.state.modalVisible);
     }
 }
 
+const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, dispatch);
+
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
+        flex: 1,
         justifyContent: 'space-between',
+        marginTop: 50
+    },
+    content: {
+        backgroundColor: '#A4969B',
+        borderBottomColor: '#878C8F',
+        borderBottomWidth: 1,
+        flex: 1,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 10
     },
     actionsContainer: {
-        display: 'flex',
-        flex: 1,
         justifyContent: 'space-between',
     },
     modalContent: {
         alignItems: 'center',
+        backgroundColor: '#A4969B',
         display: 'flex',
+        flex: 1,
         justifyContent: 'center'
+    },
+    title: {
+        color: '#FCF7FF',
+        fontSize: 18
     }
 });
+
+export default connect(() => ({}), mapDispatchToProps)(EntryDetails);
+

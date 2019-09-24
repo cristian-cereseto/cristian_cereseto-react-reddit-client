@@ -7,6 +7,11 @@ import {bindActionCreators} from 'redux';
 import Feed from '../components/Feed';
 
 class FeedContainer extends Component {
+    static navigationOptions = {
+        headerStyle: {
+            display: 'none',
+        },
+    }
     constructor(props) {
         super(props);
         this.props.getEntries();
@@ -18,8 +23,14 @@ class FeedContainer extends Component {
     render() {
         return (
             <View style={(this.props.loading) ? [styles.container, styles.containerLoading] : styles.container}>
-                <Button icon={'delete'} styles={styles.deleteButton} onPress={this.dismissAll}>DISMISS ALL</Button>
                 {this.renderContent()}
+                <View styles={styles.deleteButtonWrapper}>
+                    {(!this.props.loading) ?
+                        <Button icon={'delete'} color="#655560" onPress={this.dismissAll}>
+                            DISMISS ALL
+                        </Button> :
+                    null}
+                </View>
             </View>
         );
     }
@@ -58,17 +69,18 @@ const mapStateToProps = (state) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 25,
-        position: 'relative'
+        flex: 1,
+        marginTop: 20,
     },
     containerLoading: {
         alignItems: 'center',
         justifyContent: 'center'
     },
-    deleteButton: {
-        position: 'absolute',
-        top: 15,
-        right: 15
+    contentWrapper: {
+        flex: 1
+    },
+    deleteButtonWrapper: {
+        flex: 0,
     }
 });
 

@@ -18,7 +18,7 @@ export const reducer = (state, action) => {
                 entries: action.entries
             };
         case types.SET_NEXT_ENTRIES:
-            const entries = state.entries.concat(action.newEntries)
+            const entries = state.entries.concat(action.newEntries);
             return {
                 ...state,
                 entries
@@ -35,6 +35,17 @@ export const reducer = (state, action) => {
             };
         case types.REMOVE_ALL_ENTRIES:
             return initialState;
+        case types.SET_ENTRY_AS_READ:
+            const allEntries = state.entries;
+            const selectedEntry = allEntries.find(entry => entry.id === action.entryId);
+            if (selectedEntry) {
+                selectedEntry.isRead = true;
+            }
+
+            return {
+                ...state,
+                entries: allEntries
+            };
         default:
             return initialState;
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { Avatar, Button, Card, Paragraph } from 'react-native-paper';
 import moment from 'moment';
 
@@ -12,26 +12,34 @@ export default class Entry extends Component {
 
     render() {
         return(
-            <Card onPress={this.handlePress}>
-                <Card.Title title={this.props.title} right={(props) => this.renderIsReadStatus(props, this.props.isRead)} />
-                <Card.Content styles={styles.container}>
-                    <Paragraph>{this.props.author} - {moment(this.props.created_utc).fromNow()}</Paragraph>
-                </Card.Content>
-                {this.renderImage()}
-                <Card.Actions styles={styles.actionsContainer}>
-                    <Button icon="delete" onPress={this.handleDeleteButtonClick}>Dismiss Post</Button>
-                    <Text>{this.props.num_comments} comments</Text>
-                </Card.Actions>
-            </Card>
+            <TouchableHighlight onPress={this.handlePress}>
+                <View style={styles.container}>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>{this.props.title} - {this.props.isRead.toString()}</Text>
+                        {this.renderIsReadStatus()}
+                    </View>
+                    {this.renderImage()}
+                    <View styles={styles.infoContainer}>
+                        <Paragraph style={[styles.title, styles.text]}>{this.props.author} - {moment(this.props.created_utc).fromNow()}</Paragraph>
+                        <Paragraph style={[styles.title, styles.text]}>{this.props.num_comments} comments</Paragraph>
+                    </View>
+                    <View styles={styles.actionsContainer}>
+                        <Button icon="delete" color="#FCF7FF" onPress={this.handleDeleteButtonClick}>Dismiss Post</Button>
+                    </View>
+                </View>
+            </TouchableHighlight>
         )
     }
 
-    renderIsReadStatus(props, isRead) {
-        return (!isRead) ? <Avatar.Icon size={24} icon="announcement" /> : null;
+    renderIsReadStatus() {
+        console.log('renderIsReadStatus', this.props.title, this.props.isRead);
+        return (this.props.isRead) ? null : <Avatar.Icon color="#FCF7FF" size={24} icon="announcement" />;
     }
 
     renderImage() {
-        return (this.props.thumbnail) ? <Card.Cover source={{uri: this.props.thumbnail}} /> : null;
+        return (this.props.thumbnail && this.props.thumbnail.length) ?
+            <Image style={{height: 150}} source={{uri: this.props.thumbnail}} /> :
+            null;
     }
 
     handlePress() {
@@ -49,12 +57,36 @@ export default class Entry extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        backgroundColor: '#A4969B',
+        borderBottomColor: '#878C8F',
+        borderBottomWidth: 1,
+        flex: 1,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 10
     },
     actionsContainer: {
         display: 'flex',
+        justifyContent: 'space-between'
+    },
+    infoContainer: {
+        color: '#FCF7FF',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    text: {
+        color: '#FCF7FF',
+        display: 'flex'
+    },
+    titleContainer: {
+        display: 'flex',
         flex: 1,
-        justifyContent: 'space-between',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    title: {
+        color: '#FCF7FF',
+        fontSize: 18
     }
 });

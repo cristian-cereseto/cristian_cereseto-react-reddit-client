@@ -8,6 +8,7 @@ import FeedContainer from './containers/FeedContainer';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import EntryDetails from "./components/EntryDetails";
+import { useScreens } from 'react-native-screens';
 
 const loggerMiddleware = createLogger({predicate: (getState, action) => __DEV__});
 const configureStore = (initialState) => {
@@ -20,13 +21,14 @@ const store = configureStore({});
 
 const AppNavigator = createStackNavigator({
     Feed: FeedContainer,
-    EntryDetails: EntryDetails
+    EntryDetails
 });
 
 const AppContainer = createAppContainer(AppNavigator);
 
 export default function App() {
-  return (
+    useScreens();
+    return (
       <Provider store={store}>
           <AppContainer />
       </Provider>

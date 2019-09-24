@@ -52,3 +52,5 @@ export const setEntries = (entries) => ({ type: types.SET_ENTRIES, entries });
 export const setNewEntries = (newEntries) => ({ type: types.SET_NEXT_ENTRIES, newEntries });
 
 export const dismissAllEntries = () => ({ type: types.REMOVE_ALL_ENTRIES });
+
+export const markEntryAsRead = (entryId) => ({ type: types.SET_ENTRY_AS_READ, entryId });
