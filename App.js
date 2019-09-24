@@ -21,7 +21,7 @@ const store = configureStore({});
 
 const AppNavigator = createStackNavigator({
     Feed: FeedContainer,
-    EntryDetails
+    EntryDetails: EntryDetails
 });
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -30,7 +30,7 @@ export default function App() {
     useScreens();
     return (
       <Provider store={store}>
-          <AppContainer />
+          <AppContainer style={{backgroundColor: '#A4969B', flex: 1}} />
       </Provider>
   );
 }

@@ -26,6 +26,7 @@ class Feed extends Component {
             <View styles={styles.container}>
                 <FlatList
                     data={this.state.entries}
+                    keyExtractor={(item) => item.id}
                     renderItem={({item, index}) => {
                         return (
                             <TouchableHighlight>

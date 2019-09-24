@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { Button, Paragraph, Title } from 'react-native-paper';
-import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from '../redux/actions';
@@ -26,11 +25,17 @@ class EntryDetails extends Component {
         const entry = navigation.getParam('entry');
 
         return(
-            <View styles={styles.container}>
+            <TouchableHighlight onPress={this.toggleModalVisibility.bind(this, true)}>
                 <View style={styles.content}>
-                    <NavigationEvents onWillBlur={this.handleNavigationBack} />
+                    <Button icon="arrow-back" color="#878C8F" onPress={this.handleNavigationBack}>
+                        Go back to feed
+                    </Button>
                     <Title style={styles.text}>{entry.title} DETAILS {entry.isRead}</Title>
-                    <Paragraph>{entry.author} - {moment(entry.created_utc).fromNow()}</Paragraph>
+                    <Paragraph style={styles.text}>{entry.author} - {moment(entry.created_utc).fromNow()}</Paragraph>
+                    {this.renderImage(entry.thumbnail)}
+                    <View styles={styles.actionsContainer}>
+                        <Text style={styles.text}>{entry.num_comments} comments</Text>
+                    </View>
                     <Modal
                         animationType="fade"
                         transparent={false}
@@ -45,21 +50,15 @@ class EntryDetails extends Component {
                             </TouchableHighlight>
                         </View>
                     </Modal>
-                    {this.renderImage(entry.thumbnail)}
-                    <View styles={styles.actionsContainer}>
-                        <Text>{entry.num_comments} comments</Text>
-                    </View>
                 </View>
-            </View>
+            </TouchableHighlight>
         )
     }
 
     renderImage(thumbnail) {
         return (thumbnail) ?
             (
-                <TouchableHighlight onPress={this.toggleModalVisibility.bind(this, true)}>
-                    <Image source={{uri: thumbnail}} style={{height: 150}} />
-                </TouchableHighlight>
+                <Image source={{uri: thumbnail}} style={{width: 250, height: 150}} />
             ) :
             null;
     }
@@ -79,19 +78,12 @@ class EntryDetails extends Component {
 const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, dispatch);
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'space-between',
-        marginTop: 50
-    },
     content: {
-        backgroundColor: '#A4969B',
-        borderBottomColor: '#878C8F',
-        borderBottomWidth: 1,
-        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-between',
         paddingLeft: 20,
         paddingRight: 20,
-        paddingTop: 10
+        marginTop: 50,
     },
     actionsContainer: {
         justifyContent: 'space-between',
@@ -104,9 +96,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#FCF7FF',
+        color: '#878C8F',
         fontSize: 18
-    }
+    },
+    text: {
+        color: '#878C8F'
+    },
 });
 
 export default connect(() => ({}), mapDispatchToProps)(EntryDetails);

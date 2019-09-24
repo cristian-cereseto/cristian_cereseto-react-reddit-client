@@ -36,11 +36,13 @@ export const reducer = (state, action) => {
         case types.REMOVE_ALL_ENTRIES:
             return initialState;
         case types.SET_ENTRY_AS_READ:
-            const allEntries = state.entries;
-            const selectedEntry = allEntries.find(entry => entry.id === action.entryId);
+            const allEntries = [];
+            const selectedEntry = state.entries.find(entry => entry.id === action.entryId);
             if (selectedEntry) {
                 selectedEntry.isRead = true;
             }
+
+            state.entries.map(entry => allEntries.push(entry));
 
             return {
                 ...state,

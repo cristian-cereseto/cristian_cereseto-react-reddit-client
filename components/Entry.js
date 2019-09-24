@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { Avatar, Button, Card, Paragraph } from 'react-native-paper';
+import { Avatar, Button, Paragraph } from 'react-native-paper';
 import moment from 'moment';
 
 export default class Entry extends Component {
@@ -15,7 +15,7 @@ export default class Entry extends Component {
             <TouchableHighlight onPress={this.handlePress}>
                 <View style={styles.container}>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.title}>{this.props.title} - {this.props.isRead.toString()}</Text>
+                        <Text style={styles.title}>{this.props.title}</Text>
                         {this.renderIsReadStatus()}
                     </View>
                     {this.renderImage()}
@@ -32,7 +32,6 @@ export default class Entry extends Component {
     }
 
     renderIsReadStatus() {
-        console.log('renderIsReadStatus', this.props.title, this.props.isRead);
         return (this.props.isRead) ? null : <Avatar.Icon color="#FCF7FF" size={24} icon="announcement" />;
     }
 
